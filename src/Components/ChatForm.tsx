@@ -1,15 +1,15 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
-import { Message } from "../types";
+import { MessageType } from "../types";
 
-const initialState: Message = {
+const initialState: MessageType = {
   author: "",
   message: "",
   datetime: "",
 };
 
 const ChatForm = () => {
-  const [message, setMessage] = useState<Message>(initialState);
+  const [message, setMessage] = useState<MessageType>(initialState);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
