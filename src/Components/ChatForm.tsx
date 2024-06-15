@@ -1,6 +1,7 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { MessageType } from "../types";
+import axios from "axios";
 
 const initialState: MessageType = {
   author: "",
@@ -19,9 +20,25 @@ const ChatForm = () => {
     });
   };
 
-  const onSubmit = (e:React.FormEvent) => {
+  const sendMessage = async () => {
+    const url = "http://146.185.154.90:8000/messages";
+    const data = new URLSearchParams();
+    data.set("message", message.message);
+    data.set("author", message.author);
+
+    try {
+      await axios.post(url, data);
+    } catch (e) {
+      console.log("Error", e);
+    }
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(message);
+    sendMessage();
+    setMessage((prevState) => {
+      return { ...prevState, message: "" };
+    });
   };
 
   return (
@@ -37,6 +54,7 @@ const ChatForm = () => {
             label="Введите сообщение"
             name="message"
             onChange={onChange}
+            required
           />
         </Grid>
         <Grid item xs>
@@ -47,10 +65,13 @@ const ChatForm = () => {
             label="Введите имя"
             name="author"
             onChange={onChange}
+            required
           />
         </Grid>
         <Grid item xs>
-          <Button variant="contained" type="submit">Отправить</Button>
+          <Button variant="contained" type="submit">
+            Отправить
+          </Button>
         </Grid>
       </Grid>
     </Box>

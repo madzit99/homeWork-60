@@ -9,21 +9,19 @@ const App = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const fetchMessages = async () => {
-    const response = await axios.get('http://146.185.154.90:8000/messages');
+    const response = await axios.get("http://146.185.154.90:8000/messages");
     setMessages(response.data);
-  }
+  };
 
   useEffect(() => {
     fetchMessages();
   }, []);
 
-
-
   return (
     <Container maxWidth="md">
       <Grid container direction="column">
         <Grid item xs={9}>
-          <Messages messages={messages}/>
+          <Messages messages={messages} />
         </Grid>
         <Grid item xs={3}>
           <ChatForm />
