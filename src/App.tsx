@@ -8,13 +8,36 @@ import axios from "axios";
 const App = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
+  let lastDate: string;
+
   const fetchMessages = async () => {
     const response = await axios.get("http://146.185.154.90:8000/messages");
-    setMessages(response.data);
+    const data = response.data;
+    setMessages(data);
+    lastDate = data[data.length - 1].datetime;
+  };
+
+  const fetchLastMessages = async () => {
+    const response = await axios.get(
+      "http://146.185.154.90:8000/messages?datetime=" + lastDate
+    );
+    const newMessages: MessageType[] = response.data;
+    if (newMessages.length > 0) {
+      setMessages((prevState) => [...prevState, ...newMessages]);
+      lastDate = newMessages[newMessages.length - 1].datetime;
+    }
   };
 
   useEffect(() => {
     fetchMessages();
+    const intervalId = setInterval(() => {
+      void fetchLastMessages();
+      console.log("inside interval");
+    }, 2000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
