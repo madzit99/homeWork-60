@@ -9,7 +9,7 @@ interface Props {
 
 const Messages: React.FC<Props> = ({ messages }) => {
   return (
-    <Grid container>
+    <Grid container direction='column'spacing={2} sx={{mb: 3}} >
       {messages.map((messageItem) => (
         <Message
           key={Math.random()}
